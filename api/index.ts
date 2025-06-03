@@ -1,11 +1,12 @@
+// api/index.ts
 import Fastify from 'fastify';
-import { getIcdToken } from '../icdClient';
 import fetch from 'node-fetch';
+import { getIcdToken } from '../icdClient';
 
-const fastify = Fastify();
+const app = Fastify();
 
-// Register route
-fastify.get('/api/icd/search', async (request, reply) => {
+// Endpoint ICD Search
+app.get('/icd/entity/search', async (request, reply) => {
   const q = (request.query as any).q;
   if (!q) {
     return reply.code(400).send({ error: 'Missing query param: q' });
@@ -23,18 +24,11 @@ fastify.get('/api/icd/search', async (request, reply) => {
   return data;
 });
 
-// ❗ Tidak perlu .listen()
-// ❗ Tapi Fastify perlu diinisialisasi hanya sekali
+// Adapter untuk Vercel
+const start = app.ready().then(() => {
+  return async (req: any, res: any) => {
+    app.server.emit('request', req, res);
+  };
+});
 
-let initialized = false;
-async function ensureReady() {
-  if (!initialized) {
-    await fastify.ready();
-    initialized = true;
-  }
-}
-
-export default async function handler(req: any, res: any) {
-  await ensureReady();
-  fastify.server.emit('request', req, res);
-}
+export default start;
