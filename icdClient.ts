@@ -1,3 +1,8 @@
+interface TokenResponse {
+  access_token: string;
+  expires_in: number;
+}
+
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 
@@ -25,7 +30,11 @@ export async function getIcdToken(): Promise<string> {
     }),
   });
 
-  const data = await res.json();
+  const data = (await res.json()) as Partial<TokenResponse>;
+
+if (!data.access_token || !data.expires_in) {
+  throw new Error(`Invalid token response: ${JSON.stringify(data)}`);
+}
 
   if (!res.ok) {
   throw new Error(`Token fetch failed: ${JSON.stringify(data)}`);
