@@ -4,9 +4,6 @@ interface TokenResponse {
 }
 
 import fetch from 'node-fetch';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 let cachedToken: string | null = null;
 let tokenExpiry: number = 0;
@@ -30,18 +27,14 @@ export async function getIcdToken(): Promise<string> {
     }),
   });
 
-  const data = (await res.json()) as Partial<TokenResponse>;
-
-if (!data.access_token || !data.expires_in) {
-  throw new Error(`Invalid token response: ${JSON.stringify(data)}`);
-}
+  const data = (await res.json()) as TokenResponse;
 
   if (!res.ok) {
-  throw new Error(`Token fetch failed: ${JSON.stringify(data)}`);
-}
+    throw new Error(`Token fetch failed: ${JSON.stringify(data)}`);
+  }
 
-cachedToken = data.access_token;
-tokenExpiry = now + (data.expires_in - 60) * 1000; // refresh 1 minute before expiry
+  cachedToken = data.access_token;
+  tokenExpiry = now + (data.expires_in - 60) * 1000;
 
-return cachedToken as string;
+  return cachedToken;
 }
