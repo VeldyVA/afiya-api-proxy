@@ -1,0 +1,81 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "WHO ICD Entity Search API",
+    "version": "1.0.0",
+    "description": "API untuk melakukan pencarian entitas ICD pada WHO"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:3000"
+    }
+  ],
+  "paths": {
+    "/icd/entity/search": {
+      "get": {
+        "summary": "Cari ICD Entities",
+        "description": "Mencari ICD entities berdasarkan query string",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Kata kunci pencarian",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtreesFilter",
+            "in": "query",
+            "required": false,
+            "description": "Filter entitas berdasarkan subtree",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "useFlexisearch",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "flatResults",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "releaseId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "highlightingEnabled",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Hasil pencarian ICD",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
