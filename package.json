@@ -2,20 +2,15 @@
   "name": "afiya-api-proxy",
   "version": "1.0.0",
   "type": "module",
-  "main": "index.ts",
   "scripts": {
-    "dev": "tsx index.ts"
+    "dev": "vercel dev"
   },
   "dependencies": {
     "dotenv": "^16.3.1",
-    "fastify": "^4.26.0",
     "node-fetch": "^3.3.2"
   },
   "devDependencies": {
-    "@types/node": "^20.11.30",
     "@vercel/node": "^3.0.0",
-    "ts-node": "^10.9.2",
-    "tsx": "^4.19.4",
     "typescript": "^5.4.5"
   }
 }
