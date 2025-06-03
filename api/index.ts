@@ -1,5 +1,5 @@
 import Fastify from 'fastify';
-import { getIcdToken } from './icdClient';
+import { getIcdToken } from '../icdClient';
 import fetch from 'node-fetch';
 
 const fastify = Fastify();
