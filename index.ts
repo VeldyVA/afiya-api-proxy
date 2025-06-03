@@ -4,7 +4,8 @@ import fetch from 'node-fetch';
 
 const fastify = Fastify();
 
-fastify.get('/icd/search', async (request, reply) => {
+// Register route
+fastify.get('/api/icd/search', async (request, reply) => {
   const q = (request.query as any).q;
   if (!q) {
     return reply.code(400).send({ error: 'Missing query param: q' });
@@ -22,10 +23,18 @@ fastify.get('/icd/search', async (request, reply) => {
   return data;
 });
 
-fastify.listen({ port: 3000, host: '127.0.0.1' }, (err, address) => {
-  if (err) {
-    console.error(err);
-    process.exit(1);
+// ❗ Tidak perlu .listen()
+// ❗ Tapi Fastify perlu diinisialisasi hanya sekali
+
+let initialized = false;
+async function ensureReady() {
+  if (!initialized) {
+    await fastify.ready();
+    initialized = true;
   }
-  console.log(`Proxy API running at ${address}`);
-});
+}
+
+export default async function handler(req: any, res: any) {
+  await ensureReady();
+  fastify.server.emit('request', req, res);
+}
