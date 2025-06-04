@@ -1,8 +1,4 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
-console.log("Client ID:", process.env.ICD_CLIENT_ID);  // 🔍 DEBUG
-console.log("Client Secret:", process.env.ICD_CLIENT_SECRET);  // 🔍 DEBUG
+import 'dotenv/config';
 
 import fetch from 'node-fetch';
 
@@ -41,10 +37,17 @@ export async function getIcdToken(): Promise<string> {
     }),
   });
 
-  const data = (await res.json()) as TokenResponse;
+  const text = await res.text();
 
   if (!res.ok) {
-    throw new Error(`Token fetch failed: ${JSON.stringify(data)}`);
+  throw new Error(`Token fetch failed (${res.status}): ${text}`);
+  }
+
+  let data: TokenResponse;
+  try {
+    data = JSON.parse(text);
+  } catch (err) {
+    throw new Error(`Failed to parse token response as JSON: ${text}`);
   }
 
   cachedToken = data.access_token;
