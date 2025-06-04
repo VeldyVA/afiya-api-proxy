@@ -1,17 +1,25 @@
+import fetch from 'node-fetch';
+
 interface TokenResponse {
   access_token: string;
   expires_in: number;
 }
-
-import fetch from 'node-fetch';
 
 let cachedToken: string | null = null;
 let tokenExpiry: number = 0;
 
 export async function getIcdToken(): Promise<string> {
   const now = Date.now();
+
   if (cachedToken && now < tokenExpiry) {
     return cachedToken;
+  }
+
+  const clientId = process.env.ICD_CLIENT_ID;
+  const clientSecret = process.env.ICD_CLIENT_SECRET;
+
+  if (!clientId || !clientSecret) {
+    throw new Error('Missing ICD_CLIENT_ID or ICD_CLIENT_SECRET in environment');
   }
 
   const res = await fetch('https://id.who.int/oauth2/token', {
@@ -21,8 +29,8 @@ export async function getIcdToken(): Promise<string> {
     },
     body: new URLSearchParams({
       grant_type: 'client_credentials',
-      client_id: process.env.ICD_CLIENT_ID!,
-      client_secret: process.env.ICD_CLIENT_SECRET!,
+      client_id: clientId,
+      client_secret: clientSecret,
       scope: 'icdapi_access',
     }),
   });
