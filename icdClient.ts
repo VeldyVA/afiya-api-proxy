@@ -24,15 +24,15 @@ export async function getIcdToken(): Promise<string> {
     throw new Error('Missing ICD_CLIENT_ID or ICD_CLIENT_SECRET in environment');
   }
 
-  const res = await fetch('https://id.who.int/oauth2/token', {
+  const res = await fetch('https://icdaccessmanagement.who.int/connect/token', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: new URLSearchParams({
       grant_type: 'client_credentials',
-      client_id: clientId,
-      client_secret: clientSecret,
+      client_id: process.env.ICD_CLIENT_ID!,
+      client_secret: process.env.ICD_CLIENT_SECRET!,
       scope: 'icdapi_access',
     }),
   });

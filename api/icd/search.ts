@@ -16,6 +16,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/json',
+          'Accept-Language': 'en',
+          'API-Version': 'v2',
         },
       }
     );
