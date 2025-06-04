@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "commonjs",
   "scripts": {
-    "dev": "vercel dev"
+    "dev": "tsx api/icd/search.ts"
   },
   "dependencies": {
     "dotenv": "^16.3.1",

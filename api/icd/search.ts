@@ -19,6 +19,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         },
       }
     );
+    console.log("ICD Token:", token); 
 
     const data = await result.json();
     res.status(result.status).json(data);
