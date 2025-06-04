@@ -7,11 +7,11 @@
   },
   "servers": [
     {
-      "url": "https://afiya-api-proxy.vercel.app"
+      "url": "https://afiya-api-proxy.vercel.app/api"
     }
   ],
   "paths": {
-    "/icd/entity/search": {
+    "/icd/search": {
       "get": {
         "summary": "Cari ICD Entities",
         "description": "Mencari ICD entities berdasarkan query string",
