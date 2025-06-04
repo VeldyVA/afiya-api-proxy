@@ -1,6 +1,9 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+console.log("Client ID:", process.env.ICD_CLIENT_ID);  // 🔍 DEBUG
+console.log("Client Secret:", process.env.ICD_CLIENT_SECRET);  // 🔍 DEBUG
+
 import fetch from 'node-fetch';
 
 interface TokenResponse {
